@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "centos/7"
+  # config.vm.box = "base"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -23,7 +23,7 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # NOTE: This will enable public access to the opened port
-  config.vm.network "forwarded_port", guest: 80, host: 8080
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -32,7 +32,7 @@ Vagrant.configure("2") do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network "private_network", ip: "10.0.0.10"
+  # config.vm.network "private_network", ip: "192.168.33.10"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -67,4 +67,24 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+
+
+  # create puppetmaster node
+  config.vm.define :puppetmaster do |pup_master|
+    pup_master.vm.box = "centos/7"
+    pup_master.vm.hostname = "puppetmaster.ninan"
+    pup_master.vm.network :private_network, ip: "10.0.15.10"
+    pup_master.vm.provider "virtualbox" do |vb|
+      vb.memory = "256"
+    end
+  end
+  
+  config.vm.define :puppetagent do |pup_agent|
+    pup_agent.vm.box = "centos/7"
+    pup_agent.vm.hostname = "puppetagent.ninan"
+    pup_agent.vm.network :private_network, ip: "10.0.15.20"
+    pup_agent.vm.provider "virtualbox" do |vb|
+      vb.memory = "256"
+    end
+  end
 end
